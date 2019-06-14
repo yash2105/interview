@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <style type="text/css">
+        #mynetwork {
+          width: 100%;
+          height: 960px;
+          border: 1px solid lightgray;
+          overflow: hidden;
+          float: none;
+        }
+        #content {
+          display: table;
+          clear: left;
+          overflow: hidden;
+        }
+        #left #right {
+          display: table-cell;
+          float: left;
+          overflow: hidden;
+        }
+        #left {
+          width: 1200px;
+        }
+        #jscript {
+          font-family: "Courier New",Courier,monospace;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          width: 100%;
+        }
+        #container2 {
+            clear:left;
+            float:left;
+            width:90%;
+            overflow:hidden;
+            text-align:center;
+            border:1px solid red;
+        }
+        #container1 {
+            float:left;
+            width:90%;
+            position:relative;
+            text-align:center;
+            border:1px solid gray;
+        }
+        #col1 {
+            float:left;
+            width:80%;
+            position:relative;
+            left:0;
+            overflow:hidden;
+            text-align:right;
+            padding-right: 5px;
+        }
+        #col2 {
+            float:left;
+            width:10%;
+            position:relative;
+            left:0%;
+            overflow:hidden;
+            text-align:left;
+            padding-left: 5px;
+        }
+    </style>
+</head>
+<body>
+<center>
+
+<div class="container2">
+  <div class="container1">
+    <div id="col1">
+      <div id="mynetwork"></div>
+    </div>
+    <div id="col2">
+      <div style="height:48px"><img src="img/t0-sr.png" width="32px" style="padding-right: 5px">Tier0 SR</img></div>
+      <div style="height:48px"><img src="img/t1-sr.png" width="32px" style="padding-right: 5px">Tier1 SR</img></div>
+      <div style="height:48px"><img src="img/dr.png" width="32px" style="padding-right: 5px">DR</img></div>
+      <div style="height:48px"><img src="img/lswitch-vni.png" width="32px" style="padding-right: 5px">VNI lswitch</img></div>
+      <div style="height:48px"><img src="img/lswitch-vlan.png" width="32px" style="padding-right: 5px">Vlan lswitch</img></div>
+      <div style="height:48px"><img src="img/dashline.png" width="32px" style="padding-right: 5px">Link down</img></div>
+<!--
+      <div style="height:48px"><hr style="border-bottom:dashed 1px blue;display:inline-block;" width="28px" />Link down</div>
+-->
+    </div>
+  </div>
+</div>
+
+
+<div id="myModal" class="modal large fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Input topology</h4>
+      </div>
+      <div class="modal-body">
+        <textarea rows="20" id="jscript"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="load">Load</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+$('#load').on('click', function(e) {
+    // create a network
+    eval($('#jscript').val())
+    var container = document.getElementById('mynetwork');
+    var data = {
+        nodes: nodes,
+        edges: edges,
+    }
+    var options = {
+        nodes: {
+        },
+        edges: {
+            width: 3,
+        },
+        layout: {
+            randomSeed: 0,
+            hierarchical: {
+                direction: "UD"
+            }
+        },
+        interaction: {
+            hover: true,
+        }
+    }
+    var network = new vis.Network(container, data, options);
+})
+
+$('#myModal').modal('show')
+
+</script>
+
+
+</body>
+</html>
